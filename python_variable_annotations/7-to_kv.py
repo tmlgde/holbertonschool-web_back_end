@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module that defines a function to return a key and the square of a value as a tuple."""
+"""Module defines a function to return key and square of a value a tuple"""
 
 from typing import Union, Tuple
 
