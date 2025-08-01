@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
+# This shebang allows the script to be run directly from the command line.
 
-"""create a new task"""
+import asyncio  # Import asyncio to create and manage asynchronous tasks.
 
-
-import asyncio
+# Import the wait_random coroutine from the previous task (0-basic_async_syntax.py).
+# __import__ dynamically loads the module, and we access the wait_random function.
 wait_random = __import__('0-basic_async_syntax').wait_random
-
 
 def task_wait_random(max_delay: int) -> asyncio.Task:
     """
@@ -17,5 +17,6 @@ def task_wait_random(max_delay: int) -> asyncio.Task:
     Returns:
         asyncio.Task: A Task object that will execute wait_random asynchronously.
     """
+    # Create and return the task without awaiting it.
+    # This schedules the coroutine to run in the background.
     return asyncio.create_task(wait_random(max_delay))
-    
