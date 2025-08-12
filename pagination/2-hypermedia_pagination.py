@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""this function return a pagination with big csv file of data"""
-
-#!/usr/bin/env python3
 """
 Simple helper function for pagination.
 """
@@ -59,7 +56,6 @@ class Server:
             return []
         else:
             return data[start_index:end_index]
-
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> List[List]:
         """return a dictionnary with pagination details"""
