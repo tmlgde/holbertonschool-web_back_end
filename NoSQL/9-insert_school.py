@@ -3,7 +3,7 @@
 
 
 def insert_school(mongo_collection, **kwargs):
-    """Fuction isert a new document and return his id"""
+    """Fuction insert a new document and return his id"""
 
     if mongo_collection is None:
         return None
