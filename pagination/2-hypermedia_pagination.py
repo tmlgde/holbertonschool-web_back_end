@@ -1,33 +1,25 @@
 #!/usr/bin/env python3
 """
-Simple helper function for pagination.
+Hypermedia pagination
 """
-
 import csv
-from typing import List, Tuple
 import math
+from typing import List, Dict, Any
 
 
 def index_range(page: int, page_size: int) -> tuple:
     """
-    Calculate the start and end indexes for a given page and page size.
-
-    Args:
-        page (int): The current page number (1-indexed).
-        page_size (int): Number of items per page.
-
-    Returns:
-        tuple: (start_index, end_index)
+    function named index_range that takes two integer
+    arguments page and page_size
     """
-    start_index = (page - 1) * page_size
-    end_index = start_index + page_size
-    return (start_index, end_index)
+    start: int = (page - 1) * page_size
+    end: int = page_size * page
+    return (start, end)
 
 
 class Server:
     """Server class to paginate a database of popular baby names.
     """
-
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
@@ -45,30 +37,30 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        assert isinstance(page, int) and page > 0, "page must be > 0"
-        assert isinstance(page_size, int) and page_size > 0, "page_size > 0"
+        """
+        Implement a method named get_page that takes two integer
+        arguments page with default value 1 and page_size with
+        default value 10
+        """
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+        start, end = index_range(page, page_size)
+        pages = []
+        if start >= len(self.dataset()):
+            return pages
+        pages = self.dataset()
+        return pages[start:end]
 
-        start_index, end_index = index_range(page, page_size)
-
-        data = self.dataset()
-
-        if start_index >= len(data):
-            return []
-        else:
-            return data[start_index:end_index]
-
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """return a dictionnary with pagination details"""
-
-        date_page = self.get_page(page, page_size)
-        total_items = len(self.dataset())
-        total_pages = math.ceil(total_items / page_size)
-
-        return {
-            "page_size": len(date_page),
-            "page": page,
-            "data": date_page,
-            "next_page": page + 1 if page < total_pages else None,
-            "prev_page": page - 1 if page > 1 else None,
-            "total_pages": total_pages
-        }
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Any]:
+        """
+        returns a dictionary
+        """
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+        total_pages = math.floor(len(self.dataset()) / page_size)
+        return {'page_size': len(self.get_page(page, page_size)),
+                'page': page,
+                'data': self.get_page(page, page_size),
+                'next_page': page + 1 if page + 1 < total_pages else None,
+                'prev_page': page - 1 if page > 1 else None,
+                'total_pages': total_pages}

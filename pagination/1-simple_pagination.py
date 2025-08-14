@@ -1,32 +1,25 @@
 #!/usr/bin/env python3
 """
-Simple helper function for pagination.
+Simple pagination
 """
-
 import csv
-from typing import List, Tuple
+import math
+from typing import List
 
 
 def index_range(page: int, page_size: int) -> tuple:
     """
-    Calculate the start and end indexes for a given page and page size.
-
-    Args:
-        page (int): The current page number (1-indexed).
-        page_size (int): Number of items per page.
-
-    Returns:
-        tuple: (start_index, end_index)
+    function named index_range that takes two integer
+    arguments page and page_size
     """
-    start_index = (page - 1) * page_size
-    end_index = start_index + page_size
-    return (start_index, end_index)
+    start: int = (page - 1) * page_size
+    end: int = page_size * page
+    return (start, end)
 
 
 class Server:
     """Server class to paginate a database of popular baby names.
     """
-
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
@@ -44,14 +37,16 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        assert isinstance(page, int) and page > 0, "page must be > 0"
-        assert isinstance(page_size, int) and page_size > 0, "page_size > 0"
-
-        start_index, end_index = index_range(page, page_size)
-
-        data = self.dataset()
-
-        if start_index >= len(data):
-            return []
-        else:
-            return data[start_index:end_index]
+        """
+        Implement a method named get_page that takes two integer
+        arguments page with default value 1 and page_size with
+        default value 10
+        """
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+        start, end = index_range(page, page_size)
+        pages = []
+        if start >= len(self.dataset()):
+            return pages
+        pages = self.dataset()
+        return pages[start:end]
