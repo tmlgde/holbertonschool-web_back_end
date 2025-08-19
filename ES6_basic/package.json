@@ -4,7 +4,7 @@
   "private": true,
   "description": "ES6 Basics project",
   "scripts": {
-    "dev": "babel-node 0-main.js",
+    "dev": "babel-node",
     "test": "jest",
     "lint": "eslint .",
     "check-lint": "eslint [0-9]*.js",
