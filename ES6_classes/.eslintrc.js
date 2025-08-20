@@ -1,3 +1,4 @@
+// .eslintrc.js
 module.exports = {
   env: {
     browser: false,
@@ -17,6 +18,12 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['jest'],
+  settings: {
+    // Permet à eslint-plugin-import de résoudre les imports avec extension .js
+    'import/resolver': {
+      node: { extensions: ['.js'] },
+    },
+  },
   rules: {
     'max-classes-per-file': 'off',
     'no-underscore-dangle': 'off',
@@ -27,11 +34,13 @@ module.exports = {
       'LabeledStatement',
       'WithStatement',
     ],
+    // Autorise l’extension .js pour les imports locaux
+    'import/extensions': ['error', 'ignorePackages', { js: 'always' }],
   },
-  overrides:[
+  overrides: [
     {
       files: ['*.js'],
       excludedFiles: 'babel.config.js',
-    }
-  ]
+    },
+  ],
 };
