@@ -7,5 +7,5 @@ process.stdin.on('data', (input) => {
 });
 
 process.stdin.on('end', () => {
-    console.log('This important software is now closing');
+    console.log('This important software is now closing'); // end msg when stdin is close
 });
