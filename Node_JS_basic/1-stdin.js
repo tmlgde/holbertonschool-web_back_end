@@ -1,11 +1,12 @@
-process.stdin.setEncoding('utf-8'); // for real string
+// Displays the question
 console.log('Welcome to Holberton School, what is your name?');
 
-process.stdin.on('data', (input) => {
-    const name = input.trim(); // for delete /n
-    console.log(`Your name is: ${name}`);
-});
+// Retrieves the user name
+process.stdin.on('data', (data) => {
+  // Converts the Buffer to a string and removes spaces
+  console.log('Your name is:', data.toString().trim());
 
-process.stdin.on('end', () => {
-    console.log('This important software is now closing'); // end msg when stdin is close
+  // Closing message
+  console.log('This important software is now closing');
+  process.exit(0); // 0 = success
 });
