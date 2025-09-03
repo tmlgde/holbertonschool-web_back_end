@@ -10,7 +10,7 @@ function countStudents(path) {
 
       const lines = content.split(/\r?\n/);
       const students = lines.slice(1).filter((line) => line.trim() !== '');
-      console.log(`Number of students: ${students.length}`);
+      let result = `Number of students: ${students.length}\n`;
 
       const groups = {};
       for (const line of students) {
@@ -22,10 +22,10 @@ function countStudents(path) {
       }
 
       for (const [field, list] of Object.entries(groups)) {
-        console.log(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
+        result += `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}\n`;
       }
 
-      resolve(); // important: terminer la Promise en succès
+      resolve(result.trim()); // important: terminer la Promise en succès
     });
   });
 }
