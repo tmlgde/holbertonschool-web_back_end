@@ -1,33 +1,38 @@
-// 3-read_file_async.js
-const fs = require('fs');
-
 function countStudents(path) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, content) => {
-      if (err) {
-        return reject(new Error('Cannot load the database'));
-      }
+return new Promise((resolve, reject) => { // return a new promise with the csv file
+    const fs = require('fs'); // module here for the promise
 
-      const lines = content.split(/\r?\n/);
-      const students = lines.slice(1).filter((line) => line.trim() !== '');
-      console.log(`Number of students: ${students.length}`);
+    fs.readFile(path, 'utf8', (err, data) => {
+    if (err) {
+        reject(new Error('Cannot load the database'));
+        return;
+    }
 
-      const groups = {};
-      for (const line of students) {
-        const cols = line.split(',');
-        const firstname = cols[0].trim();
-        const field = cols[cols.length - 1].trim();
-        if (!groups[field]) groups[field] = [];
-        groups[field].push(firstname);
-      }
+    const lines = data.split('\n');
+    const cleanLines = lines.filter(line => line.trim() !== '');
+    const rows = cleanLines.slice(1);
+    const students = rows.map(line => line.split(','));
 
-      for (const [field, list] of Object.entries(groups)) {
-        console.log(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
-      }
+    const totalStudents = students.length;
+    console.log(`Number of students: ${totalStudents}`);
 
-      resolve(); 
+    const fields = {}; // same step of exo 2
+    for (const student of students) {
+        const firstname = student[0];
+        const field = student[3];
+        if (!fields[field]) {
+        fields[field] = [];
+        }
+        fields[field].push(firstname);
+    }
+
+    for (const fieldName of Object.keys(fields)) {
+        const names = fields[fieldName].join(', ');
+        console.log(`Number of students in ${fieldName}: ${fields[fieldName].length}. List: ${names}`);
+    }
+    resolve(); // iùportant for the end of the promise
     });
-  });
+});
 }
 
 module.exports = countStudents;
