@@ -3,15 +3,14 @@ const fs = require('fs');
 
 function countStudents(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf8', (err, data) => {
+    fs.readFile(path, 'utf8', (err, content) => {
       if (err) {
-        reject(new Error('Cannot load the database'));
-        return;
+        return reject(new Error('Cannot load the database'));
       }
 
-      const lines = data.split(/\r?\n/);
+      const lines = content.split(/\r?\n/);
       const students = lines.slice(1).filter((line) => line.trim() !== '');
-      console.log(`Number of students: ${students.length}`);
+      let result = `Number of students: ${students.length}\n`;
 
       const groups = {};
       for (const line of students) {
@@ -21,10 +20,12 @@ function countStudents(path) {
         if (!groups[field]) groups[field] = [];
         groups[field].push(firstname);
       }
+
       for (const [field, list] of Object.entries(groups)) {
-        console.log(`Number of students in ${field}: ${list.length}. List: ${list.join(', ')}`);
+        result += `Number of students in ${field}: ${list.length}. List: ${list.join(', ')}\n`;
       }
-      resolve();
+
+      resolve(result.trim()); // important: terminer la Promise en succès
     });
   });
 }
